@@ -1,0 +1,9 @@
+C:\Users\Vorya\Desktop\GIT\Final Project\Final Project\bin\Debug\Final Project.exe.config
+C:\Users\Vorya\Desktop\GIT\Final Project\Final Project\bin\Debug\Final Project.exe
+C:\Users\Vorya\Desktop\GIT\Final Project\Final Project\bin\Debug\Final Project.pdb
+C:\Users\Vorya\Desktop\GIT\Final Project\Final Project\obj\Debug\Final Project.csprojResolveAssemblyReference.cache
+C:\Users\Vorya\Desktop\GIT\Final Project\Final Project\obj\Debug\Final_Project.Properties.Resources.resources
+C:\Users\Vorya\Desktop\GIT\Final Project\Final Project\obj\Debug\Final Project.csproj.GenerateResource.Cache
+C:\Users\Vorya\Desktop\GIT\Final Project\Final Project\obj\Debug\Final Project.exe
+C:\Users\Vorya\Desktop\GIT\Final Project\Final Project\obj\Debug\Final Project.pdb
+C:\Users\Vorya\Desktop\GIT\Final Project\Final Project\obj\Debug\Final_Project.frmMain.resources
