@@ -46,12 +46,12 @@
             this.dataGridView1.Location = new System.Drawing.Point(12, 12);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.dataGridView1.Size = new System.Drawing.Size(845, 373);
+            this.dataGridView1.Size = new System.Drawing.Size(985, 271);
             this.dataGridView1.TabIndex = 0;
             // 
             // btnCrawl
             // 
-            this.btnCrawl.Location = new System.Drawing.Point(782, 404);
+            this.btnCrawl.Location = new System.Drawing.Point(922, 289);
             this.btnCrawl.Name = "btnCrawl";
             this.btnCrawl.Size = new System.Drawing.Size(75, 23);
             this.btnCrawl.TabIndex = 1;
@@ -61,7 +61,7 @@
             // 
             // btnParser
             // 
-            this.btnParser.Location = new System.Drawing.Point(603, 404);
+            this.btnParser.Location = new System.Drawing.Point(841, 289);
             this.btnParser.Name = "btnParser";
             this.btnParser.Size = new System.Drawing.Size(75, 23);
             this.btnParser.TabIndex = 2;
@@ -71,7 +71,7 @@
             // 
             // btnShow
             // 
-            this.btnShow.Location = new System.Drawing.Point(425, 404);
+            this.btnShow.Location = new System.Drawing.Point(760, 289);
             this.btnShow.Name = "btnShow";
             this.btnShow.Size = new System.Drawing.Size(75, 23);
             this.btnShow.TabIndex = 3;
@@ -81,7 +81,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(12, 404);
+            this.btnExit.Location = new System.Drawing.Point(12, 302);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 4;
@@ -94,9 +94,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripProgressBar1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 443);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 334);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(872, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1009, 22);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -110,13 +110,14 @@
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            this.toolStripProgressBar1.Click += new System.EventHandler(this.toolStripProgressBar1_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(872, 465);
+            this.ClientSize = new System.Drawing.Size(1009, 356);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnShow);

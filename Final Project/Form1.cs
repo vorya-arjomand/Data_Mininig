@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using HtmlAgilityPack;
 using System.Net;
+using System.Threading;
 
 namespace Final_Project
 {
@@ -54,7 +55,8 @@ namespace Final_Project
             for (int i = 0; i < row.Length - 1; i++)
             {
                 string[] coulmn = row[i].Split('#');
-                dt.Rows.Add(coulmn[0], coulmn[1], coulmn[2], coulmn[3], coulmn[4], coulmn[5], coulmn[6], coulmn[7], coulmn[8], coulmn[9]);
+                dt.Rows.Add(coulmn[0], coulmn[1], coulmn[2], coulmn[3], coulmn[4], coulmn[5],
+                    coulmn[6], coulmn[7], coulmn[8], coulmn[9]);
             }
             dataGridView1.DataSource = dt;
         }
@@ -81,12 +83,7 @@ namespace Final_Project
                 string url = "http://www.mehrnews.com/page/archive.xhtml?pi=" + i + "&ms=0";
                 url_list.Add(url);
             }
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    Thread t = new Thread(Threading);
-            //    t.Start();
-            //    toolStripProgressBar1.Value++;
-            //}
+            
             string savepath = @"E:\mehrnews\";
             for (int i = 0; i < url_list.Count; i++)
             {
@@ -288,16 +285,16 @@ namespace Final_Project
                         Array[0] = x.ToString();
                         string[] s = new string[4];
 
-                        s = NewsText(Array[1], x);
+                        if (Array[1] != null)
+                            s = NewsText(Array[1], x);
                         x++;
                         for (int m = 6, n = 0; m <= 9; m++, n++)
                         {
-                            Array[m] = s[n];
+                            if (s == null)
+                                break;
+                                Array[m] = s[n];
                         }
                         list.Add(Array);
-
-
-
                     }
 
                 }//end of if(Root!=null)
@@ -334,9 +331,12 @@ namespace Final_Project
 
         }
 
-        public string[] NewsText(string text, int n)
+        public string[] NewsText(string text, int num)
         {
+            
+            string[] s = null;
             List<string> w = text.Split('/').ToList();
+            
 
             try
             {
@@ -344,7 +344,7 @@ namespace Final_Project
                 wp.UseDefaultCredentials = true;
                 WebClient wc = new WebClient();
                 wc.Proxy = wp;
-                string path = @"E:\mehrnews\links\" + n + " . " + w[w.Count - 1] + ".html";
+                string path = @"E:\mehrnews\links\" + num + " . " + w[w.Count - 1] + ".html";
                 wc.DownloadFile(text, path);
             }
             catch (Exception ex)
@@ -355,77 +355,87 @@ namespace Final_Project
             string file = null;
             for (int i = 0; i < HtmlFiles.Length; i++)
             {
-                if (HtmlFiles[i] == ("e:\\mehrnews\\links\\" + n + " . " + w[w.Count - 1] + ".html"))
+                if (HtmlFiles[i] == ("e:\\mehrnews\\links\\" + num + " . " + w[w.Count-1] + ".html"))
                     file = HtmlFiles[i];
-            }
-            HtmlAgilityPack.HtmlDocument Doc1 = new HtmlAgilityPack.HtmlDocument();
-            Doc1.Load(file, Encoding.UTF8);
-            var Temp = Doc1.DocumentNode.SelectNodes("//div");
-            var t = Doc1.DocumentNode.SelectNodes("//span");
-            HtmlNode Root = null, div_meta = null, div_subtitle = null, span = null;
-            string[] s = new string[4];
-            if (Temp != null)
-            {
-                for (int j = 0; j < Temp.Count; j++)
-                {
-                    for (int k = 0; k < Temp[j].Attributes.Count; k++)
-                    {
-                        if (Temp[j].Attributes[k].Name == "class" && Temp[j].Attributes[k].Value == "full-text")
-                        {
-                            Root = Temp[j];
-                        }
-                        else if (Temp[j].Attributes[k].Name == "class" && Temp[j].Attributes[k].Value == "meta")
-                        {
-                            div_meta = Temp[j];
-                        }
-                        else if (Temp[j].Attributes[k].Name == "class" && Temp[j].Attributes[k].Value == "subtitle")
-                        {
-                            div_subtitle = Temp[j];
-                        }
-                    }
-                    if (Root != null)
-                        break;
-                }
-            }
-            if (t != null)
-            {
-                for (int j = 0; j < t.Count; j++)
-                {
-                    for (int k = 0; k < t[j].Attributes.Count; k++)
-                    {
-                        if (t[j].Attributes[k].Name == "class" && t[j].Attributes[k].Value == "intro-text")
-                        {
-                            span = t[j];
-                        }
-                    }
-                }
-            }
-            if (div_meta != null)
-                s[0] = div_meta.InnerText;
-            if (div_subtitle != null)
-                s[1] = div_subtitle.InnerText;
-            if (span != null)
-                s[2] = span.InnerText;
-            if (Root != null)
-            {
-                Queue<HtmlNode> Q = new Queue<HtmlNode>();
-                Q.Enqueue(Root);
-                for (int j = 0; j < Q.Peek().ChildNodes.Count; j++)
-                {
-                    Q.Enqueue(Q.Peek().ChildNodes[j]);
-                }
-                Q.Dequeue();
-                while (Q.Count > 0)
-                {
-                    if (Q.Peek().Name == "p")
-                    {
-                        s[3] += Q.Peek().InnerText;
-                    }
-                    Q.Dequeue();
-                }
+                //break;
             }
 
-            return s;
+            if (file != null)
+            {
+                HtmlAgilityPack.HtmlDocument Doc1 = new HtmlAgilityPack.HtmlDocument();
+                Doc1.Load(file, Encoding.UTF8);
+                var Temp = Doc1.DocumentNode.SelectNodes("//div");
+                var t = Doc1.DocumentNode.SelectNodes("//span");
+
+                HtmlNode Root = null, div_meta = null, div_subtitle = null, span = null;
+                s = new string[4];
+                if (Temp != null)
+                {
+                    for (int j = 0; j < Temp.Count; j++)
+                    {
+                        for (int k = 0; k < Temp[j].Attributes.Count; k++)
+                        {
+                            if (Temp[j].Attributes[k].Name == "class" && Temp[j].Attributes[k].Value == "full-text")
+                            {
+                                Root = Temp[j];
+                            }
+                            else if (Temp[j].Attributes[k].Name == "class" && Temp[j].Attributes[k].Value == "meta")
+                            {
+                                div_meta = Temp[j];
+                            }
+                            else if (Temp[j].Attributes[k].Name == "class" && Temp[j].Attributes[k].Value == "subtitle")
+                            {
+                                div_subtitle = Temp[j];
+                            }
+                        }
+                        if (Root != null)
+                            break;
+                    }
+                }
+                if (t != null)
+                {
+                    for (int j = 0; j < t.Count; j++)
+                    {
+                        for (int k = 0; k < t[j].Attributes.Count; k++)
+                        {
+                            if (t[j].Attributes[k].Name == "class" && t[j].Attributes[k].Value == "intro-text")
+                            {
+                                span = t[j];
+                            }
+                        }
+                    }
+                }
+
+
+                if (div_meta != null)
+                    s[0] = div_meta.InnerText;
+                if (div_subtitle != null)
+                    s[1] = div_subtitle.InnerText;
+                if (span != null)
+                    s[2] = span.InnerText;
+
+                        if (Root != null)
+                        {
+                            Queue<HtmlNode> Q = new Queue<HtmlNode>();
+                            Q.Enqueue(Root);
+                            for (int j = 0; j < Q.Peek().ChildNodes.Count; j++)
+                            {
+                                Q.Enqueue(Q.Peek().ChildNodes[j]);
+                            }
+                            Q.Dequeue();
+                            while (Q.Count > 0)
+                            {
+                                if (Q.Peek().Name == "p")
+                                {
+                                    s[3] += Q.Peek().InnerText;
+                                }
+                                Q.Dequeue();
+                            }
+                        }
+
+            }
+                return s;
+            
         }
 
         public void webcrawling(string url, string path, int i)
@@ -436,11 +446,7 @@ namespace Final_Project
                 wp.UseDefaultCredentials = true;
                 WebClient wc = new WebClient();
                 wc.Proxy = wp;
-
-               
                 wc.DownloadFile(url, path);
-
-                
             }
             catch (Exception ex)
             {
@@ -448,6 +454,18 @@ namespace Final_Project
             }
 
         }
+
+        private void toolStripProgressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+       
 
         
     }
